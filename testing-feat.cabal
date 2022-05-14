@@ -21,8 +21,8 @@ Description:         Feat (Functional Enumeration of Algebraic Types) provides
 License:             BSD3
 License-file:        LICENSE
 Author:              Jonas Duregård
-Maintainer:          jonas.duregard@gmail.com
-Homepage:            https://github.com/JonasDuregard/testing-feat
+Maintainer:          byorgey@gmail.com
+Homepage:            https://github.com/size-based/testing-feat
 Copyright:           Jonas Duregård
 Category:            Testing
 Build-type:          Simple
@@ -33,9 +33,9 @@ Extra-source-files:
 Cabal-version:       >=1.6
 source-repository head
   type:     git
-  location: https://github.com/JonasDuregard/testing-feat
-Library
+  location: https://github.com/size-based/testing-feat
 
+Library
   Hs-source-dirs:       .
   Exposed-modules:
     Test.Feat,
