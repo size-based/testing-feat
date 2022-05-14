@@ -31,6 +31,8 @@ Extra-source-files:
     examples/haskell-src-exts/hse.hs
     examples/lambda-terms/lambdas.hs
 Cabal-version:       >=1.6
+tested-with:         GHC ==8.6.5 || ==8.8.4 || ==8.10.7 || ==9.0.2 || ==9.2.2
+
 source-repository head
   type:     git
   location: https://github.com/size-based/testing-feat
