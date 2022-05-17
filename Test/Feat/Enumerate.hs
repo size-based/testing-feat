@@ -82,7 +82,6 @@ instance Semigroup (Enumerate a) where
 -- | The @'mappend'@ is (disjoint) @'union'@
 instance Monoid (Enumerate a) where
   mempty      = empty
-  mappend     = union
   mconcat     = econcat
 
 -- | Optimal 'mconcat' on enumerations.

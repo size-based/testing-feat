@@ -27,7 +27,6 @@ import Control.Enumerable
 --import Data.Modifiers
 
 -- base
-import Data.List
 import Data.Ratio((%))
 
 

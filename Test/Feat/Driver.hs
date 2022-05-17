@@ -12,7 +12,7 @@ module Test.Feat.Driver(
    -- * Extremely flexible test driver
    , testFlex
    , Result(..)
-   , FlexibleOptions(..)
+   , FlexibleOptions
    , FlexOptions(..)
    , defFlex
    , toFlex
