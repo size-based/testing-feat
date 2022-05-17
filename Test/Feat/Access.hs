@@ -89,11 +89,11 @@ uniformWith = uni . parts where
   uni :: [Finite a] -> Int -> Gen a
   uni  []  _     =  error "uniform: empty enumeration"
   uni  ps  maxp  =  let  (incl, rest)  = splitAt maxp ps
-                         fin           = mconcat incl
-    in  case fCard fin of
+                         f             = mconcat incl
+    in  case fCard f of
           0  -> uni rest 1
-          _  -> do  i <- choose (0,fCard fin-1)
-                    return (fIndex fin i)
+          _  -> do  i <- choose (0,fCard f - 1)
+                    return (fIndex f i)
 
                     
 -- | Enumerates every nth value of the enumeration from a given starting index.
@@ -104,14 +104,14 @@ uniformWith = uni . parts where
 skipping :: Enumerate a -> Index -> Integer -> Enumerate a
 skipping _ o0 step | step <= 0 || o0 < 0 = error "skippingWith: invalid argument"
 skipping e o0 step = fromParts $ go o0 (parts e) where
-   go o []      = []
+   go _ []      = []
    go o _       | o < 0 = error "negative"
    go o (p:ps)  = p' : go o' ps where -- error (show (space,take,o')) : 
      space = fCard p - o
-     (take,o')  | space <= 0   = (0,o-fCard p)
+     (nTake,o') | space <= 0   = (0,o-fCard p)
                 | space < step = (1,step-space)
                 | otherwise    = (space `quotRem` step)
-     p' = Finite{fCard = take 
+     p' = Finite{fCard = nTake 
           , fIndex = \i -> fIndex p (i*step + o)}
 
 -- | A version of values with a limited number of values in each inner list.
@@ -123,7 +123,7 @@ bounded e n = fromParts $ map (samplePart n) $ parts e where
     -- This is "fair" if we consider using samplePart on the next part as well.
     -- An alternative would be to make the last index used |crd-1|.
     samplePart :: Index -> Finite a -> Finite a
-    samplePart m f@(Finite crd ix) =
+    samplePart m f@(Finite crd _) =
       let  step  =  crd % m
       in if crd <= m
            then f

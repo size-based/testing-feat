@@ -2,13 +2,12 @@
 module Test.Feat.Finite (Finite (..), Index, fromFinite, finFin) where
 
 import Control.Applicative
-import Data.Semigroup
-import Data.Monoid
 
 type Index = Integer
 data Finite a = Finite {fCard :: Index, fIndex :: Index -> a}
 
-finEmpty = Finite 0 (\i -> error "index: Empty")
+finEmpty :: Finite a
+finEmpty = Finite 0 (\_ -> error "index: Empty")
 
 finUnion :: Finite a -> Finite a -> Finite a
 finUnion f1 f2
@@ -69,4 +68,3 @@ instance Show a => Show (Finite a) where
 finFin :: Integer -> Finite Integer
 finFin k | k <= 0 = finEmpty
 finFin k = Finite k (\i -> i)
-

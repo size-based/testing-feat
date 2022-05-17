@@ -42,10 +42,8 @@ import Data.Typeable
 import Data.List(transpose)
 import Test.Feat.Finite
 
-type Part = Int
-
 -- | A functional enumeration of type @t@ is a partition of
--- @t@ into finite numbered sets called Parts. Each parts contains values
+-- @t@ into finite numbered sets. Each part contains values
 -- of a certain cost (typically the size of the value).
 data Enumerate a = Enumerate
    { revParts   ::  RevList (Finite a)
@@ -94,6 +92,7 @@ econcat xs    = Enumerate
 
 
 -- Product of two enumerations
+cartesian :: Enumerate a -> Enumerate b -> Enumerate (a,b)
 cartesian (Enumerate xs1) (Enumerate xs2) = Enumerate (xs1 `prod` xs2)
 
 prod :: RevList (Finite a) -> RevList (Finite b) -> RevList (Finite (a,b))
@@ -102,7 +101,7 @@ prod (RevList xs0@(_:xst) _)  (RevList _ rys0)  = toRev$ prod' rys0 where
 
   -- We need to thread carefully here, making sure that guarded recursion is safe
   prod' []        = []
-  prod' (ry:rys)  = go ry rys where
+  prod' (h:t)  = go h t where
     go ry rys = conv xs0 ry : case rys of
       (ry':rys')   -> go ry' rys'
       []           -> prod'' ry xst
@@ -125,7 +124,7 @@ prod (RevList xs0@(_:xst) _)  (RevList _ rys0)  = toRev$ prod' rys0 where
         then  let (q, r) = (i `quotRem` fCard f2)
               in (fIndex f1 q, fIndex f2 r)
         else prodSel f1s f2s (i-mul)
-  prodSel _ _ = \i -> error "index out of bounds"
+  prodSel _ _ = \_ -> error "index out of bounds"
 
 
 union :: Enumerate a -> Enumerate a -> Enumerate a
@@ -154,7 +153,7 @@ instance Functor RevList where
   fmap f = toRev . fmap f . fromRev
 
 instance Semigroup a => Semigroup (RevList a) where
-  (<>) xs ys  = toRev $ zipMon (fromRev xs) (fromRev ys) where
+  (<>) as bs  = toRev $ zipMon (fromRev as) (fromRev bs) where
     zipMon :: Semigroup a => [a] -> [a] -> [a]
     zipMon (x:xs) (y:ys) = x <> y : zipMon xs ys
     zipMon xs ys         = xs ++ ys
@@ -169,13 +168,15 @@ instance Semigroup a => Monoid (RevList a) where
 -- Haskell implementation evaluating any inital segment of
 -- @'reversals' (toRev xs)@ uses linear memory in the size of the segment.
 toRev:: [a] -> RevList a
-toRev xs = RevList xs $ go [] xs where
+toRev as = RevList as $ go [] as where
   go _ []       = []
   go rev (x:xs) = let rev' = x:rev in rev' : go rev' xs
 
 -- | Adds an  element to the head of a @RevList@. Constant memory iff the
 -- the reversals of the resulting list are not evaluated (which is frequently
 -- the case in @Feat@).
+revCons :: a -> RevList a -> RevList a
 revCons a = toRev. (a:) . fromRev
 
+revPure :: a -> RevList a
 revPure a = RevList [a] [[a]]
