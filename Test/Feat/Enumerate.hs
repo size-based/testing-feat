@@ -161,7 +161,7 @@ instance Semigroup a => Semigroup (RevList a) where
 
 -- Maybe this should be append instead?
 -- | Padded zip
-instance (Monoid a, Semigroup a) => Monoid (RevList a) where
+instance Semigroup a => Monoid (RevList a) where
   mempty   = toRev[]
   mappend  = (<>)
 
