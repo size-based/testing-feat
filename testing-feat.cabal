@@ -30,6 +30,7 @@ Extra-source-files:
     examples/template-haskell/th.hs
     examples/haskell-src-exts/hse.hs
     examples/lambda-terms/lambdas.hs
+    CHANGELOG.md
 Cabal-version:       >=1.8
 tested-with:         GHC ==8.6.5 || ==8.8.4 || ==8.10.7 || ==9.0.2 || ==9.2.2
 
