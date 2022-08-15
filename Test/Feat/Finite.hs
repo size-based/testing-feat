@@ -35,7 +35,6 @@ instance Semigroup (Finite a) where
 
 instance Monoid (Finite a) where
   mempty = finEmpty
-  mappend = finUnion
   mconcat xs = Finite
     (sum $ map fCard xs)
     (sumSel $ filter ((>0) . fCard) xs)
