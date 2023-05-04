@@ -1,7 +1,3 @@
-* 1.1.1.1-r1 (4 May 2023)
-
-    - Test with GHC 9.6
-
 * 1.1.1.1 (15 Aug 2022)
 
     - Test with GHC 9.4
